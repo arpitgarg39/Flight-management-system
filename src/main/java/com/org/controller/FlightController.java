@@ -51,19 +51,18 @@ public class FlightController {
   }
 
   private void validation(FlightDto flightDto) {
-    if (flightDto.getSource() == null || flightDto.getSource().isEmpty()) {
+
+    if (FlightService.isNull(flightDto.getSource()))
       throw new CustomException("source param is mandatory");
-    }
-    if (flightDto.getDestination() == null || flightDto.getDestination().isEmpty()) {
+
+    if (FlightService.isNull(flightDto.getDestination()))
       throw new CustomException("destination param is mandatory");
-    }
-    if (flightDto.getDepartureDate() == null || flightDto.getDepartureDate().isEmpty()) {
+
+    if (FlightService.isNull(flightDto.getDepartureDate()))
       throw new CustomException("departure date is mandatory");
-    }
-    if (flightDto.getFlightWay() == 2
-        && (flightDto.getSource() == null || flightDto.getSource().isEmpty())) {
+
+    if (flightDto.getFlightWay() == 2 && FlightService.isNull(flightDto.getReturnDate()))
       throw new CustomException("return date is mandatory");
-    }
   }
 
 }

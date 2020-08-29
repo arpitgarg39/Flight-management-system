@@ -13,4 +13,9 @@ public interface FlightService {
 
   Transaction flightBooking(Long userId, Long flightId, PassengerDto passengerDto);
 
+  static boolean isNull(String str) {
+
+    return str == null ? true : "".equals(str) ? true : false;
+  }
+
 }

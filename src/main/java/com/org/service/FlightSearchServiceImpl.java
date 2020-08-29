@@ -18,18 +18,32 @@ import com.org.repository.FlightBookingRepository;
 import com.org.repository.FlightRepository;
 import com.org.repository.UserRepository;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class FlightSearchServiceImpl.
+ */
 @Service
 public class FlightSearchServiceImpl implements FlightService {
 
+  /** The flight repository. */
   @Autowired
   FlightRepository flightRepository;
 
+  /** The user repository. */
   @Autowired
   UserRepository userRepository;
 
+  /** The flight booking repository. */
   @Autowired
   FlightBookingRepository flightBookingRepository;
 
+  /**
+   * Search flight.
+   *
+   * @param flightDto
+   *          the flight dto
+   * @return the list
+   */
   public List<Flight> searchFlight(FlightDto flightDto) {
 
     List<Flight> flights = flightRepository
@@ -43,12 +57,24 @@ public class FlightSearchServiceImpl implements FlightService {
       flights.addAll(twoWayFlightList);
 
     }
-    if (flights == null || flights.isEmpty())
+    boolean isTrue = flights == null ? true : flights.size() == 0 ? true : false;
+    if (isTrue)
       throw new CustomException("Flight not found!");
     return flights;
 
   }
 
+  /**
+   * Flight booking.
+   *
+   * @param userId
+   *          the user id
+   * @param flightId
+   *          the flight id
+   * @param passengerDto
+   *          the passenger dto
+   * @return the transaction
+   */
   @Override
   @Transactional
   public Transaction flightBooking(Long userId, Long flightId, PassengerDto passengerDto) {
@@ -70,8 +96,7 @@ public class FlightSearchServiceImpl implements FlightService {
     }
 
     User updateUser = updateUserDetails(passengerDto, fetchUser.get());
-    Transaction flightBooking = preparePayloadForBooking(flight.get(), totalTraveller,
-        updateUser);
+    Transaction flightBooking = preparePayloadForBooking(flight.get(), totalTraveller, updateUser);
 
     Transaction flightBookingResponse = flightBookingRepository.save(flightBooking);
 
@@ -80,8 +105,18 @@ public class FlightSearchServiceImpl implements FlightService {
     return flightBookingResponse;
   }
 
-  private Transaction preparePayloadForBooking(Flight flight, int totalTraveller,
-      User updateUser) {
+  /**
+   * Prepare payload for booking.
+   *
+   * @param flight
+   *          the flight
+   * @param totalTraveller
+   *          the total traveller
+   * @param updateUser
+   *          the update user
+   * @return the transaction
+   */
+  private Transaction preparePayloadForBooking(Flight flight, int totalTraveller, User updateUser) {
     Transaction flightBooking = new Transaction();
     flightBooking.setNoOfPassenger(totalTraveller);
     flightBooking.setUser(updateUser);
@@ -99,6 +134,15 @@ public class FlightSearchServiceImpl implements FlightService {
     return flightBooking;
   }
 
+  /**
+   * Update user details.
+   *
+   * @param passengerDto
+   *          the passenger dto
+   * @param user
+   *          the user
+   * @return the user
+   */
   private User updateUserDetails(PassengerDto passengerDto, User user) {
     user.setFirstName(passengerDto.getFirstName());
     user.setLastName(passengerDto.getLastName());
