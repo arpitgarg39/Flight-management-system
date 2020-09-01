@@ -8,6 +8,9 @@ import javax.persistence.Table;
 
 import lombok.Data;
 
+/**
+ * The type User type.
+ */
 @Entity
 @Table(name = "user_type")
 @Data

@@ -1,5 +1,6 @@
 package com.org.controller;
 
+import com.org.service.FlightService;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,15 +21,31 @@ import com.org.dto.PassengerDto;
 import com.org.entity.Flight;
 import com.org.entity.Transaction;
 import com.org.exception.CustomException;
-import com.org.service.FlightService;
+import com.org.service.FlightBookingService;
 
+/**
+ * The type Flight controller.
+ */
 @RestController
 @RequestMapping("/flight")
 public class FlightController {
 
-  @Autowired
-  FlightService flightService;
+  /**
+   * The Flight booking service.
+   */
+  @Autowired FlightBookingService flightBookingService;
 
+  /**
+   * The Flight service.
+   */
+  @Autowired FlightService flightService;
+
+  /**
+   * Flight search response entity.
+   *
+   * @param flightDto the flight dto
+   * @return the response entity
+   */
   @GetMapping("/search")
   public ResponseEntity<List<Flight>> flightSearch(@ModelAttribute FlightDto flightDto) {
 
@@ -37,6 +54,14 @@ public class FlightController {
     return new ResponseEntity<List<Flight>>(searchFlightList, new HttpHeaders(), HttpStatus.OK);
   }
 
+  /**
+   * Flight book response entity.
+   *
+   * @param userId       the user id
+   * @param flightId     the flight id
+   * @param passengerDto the passenger dto
+   * @return the response entity
+   */
   @PostMapping("/{userId}/booking")
   public ResponseEntity<Transaction> flightBook(@PathVariable("userId") Long userId,
       @RequestParam(required = true, name = "flightId") Long flightId,
@@ -45,23 +70,23 @@ public class FlightController {
     if (userId == null || flightId == null || passengerDto == null)
       throw new CustomException("Value can not be null");
 
-    Transaction bookingRespDto = flightService.flightBooking(userId, flightId, passengerDto);
+    Transaction bookingRespDto = flightBookingService.flightBooking(userId, flightId, passengerDto);
 
     return new ResponseEntity<Transaction>(bookingRespDto, new HttpHeaders(), HttpStatus.OK);
   }
 
   private void validation(FlightDto flightDto) {
 
-    if (FlightService.isNull(flightDto.getSource()))
+    if (FlightBookingService.isNull(flightDto.getSource()))
       throw new CustomException("source param is mandatory");
 
-    if (FlightService.isNull(flightDto.getDestination()))
+    if (FlightBookingService.isNull(flightDto.getDestination()))
       throw new CustomException("destination param is mandatory");
 
-    if (FlightService.isNull(flightDto.getDepartureDate()))
+    if (FlightBookingService.isNull(flightDto.getDepartureDate()))
       throw new CustomException("departure date is mandatory");
 
-    if (flightDto.getFlightWay() == 2 && FlightService.isNull(flightDto.getReturnDate()))
+    if (flightDto.getFlightWay() == 2 && FlightBookingService.isNull(flightDto.getReturnDate()))
       throw new CustomException("return date is mandatory");
   }
 

@@ -10,6 +10,9 @@ import javax.persistence.Table;
 
 import lombok.Data;
 
+/**
+ * The type Transaction.
+ */
 @Entity
 @Data
 @Table(name = "transaction")

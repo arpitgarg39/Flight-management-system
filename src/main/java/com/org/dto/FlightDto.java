@@ -7,6 +7,9 @@ import com.sun.istack.NotNull;
 
 import lombok.Data;
 
+/**
+ * The type Flight dto.
+ */
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FlightDto implements Serializable {

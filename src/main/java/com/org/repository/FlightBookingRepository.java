@@ -5,6 +5,9 @@ import org.springframework.stereotype.Repository;
 
 import com.org.entity.Transaction;
 
+/**
+ * The interface Flight booking repository.
+ */
 @Repository
 public interface FlightBookingRepository extends JpaRepository<Transaction, Integer> {
 

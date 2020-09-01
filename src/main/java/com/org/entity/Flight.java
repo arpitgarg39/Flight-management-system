@@ -10,6 +10,9 @@ import com.sun.istack.NotNull;
 
 import lombok.Data;
 
+/**
+ * The type Flight.
+ */
 @Entity
 @Data
 @Table(name = "FLIGHT")

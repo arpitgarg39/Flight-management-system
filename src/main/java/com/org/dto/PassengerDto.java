@@ -2,6 +2,9 @@ package com.org.dto;
 
 import lombok.Data;
 
+/**
+ * The type Passenger dto.
+ */
 @Data
 public class PassengerDto {
 

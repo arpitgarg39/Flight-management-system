@@ -10,6 +10,9 @@ import javax.persistence.Table;
 
 import lombok.Data;
 
+/**
+ * The type User.
+ */
 @Entity
 @Table(name = "users")
 @Data
