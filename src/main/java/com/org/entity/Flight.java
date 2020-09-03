@@ -1,10 +1,7 @@
 package com.org.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.*;
 
 import com.sun.istack.NotNull;
 
@@ -33,5 +30,9 @@ public class Flight {
 
   private double price = 0.0;
   private int capacity;
+  @JsonIgnore
+  @Version  //Optimistic Locking for concurrent access
+  @Column(columnDefinition = "Integer DEFAULT 0",nullable = false)
+  private long version=0L;
 
 }
